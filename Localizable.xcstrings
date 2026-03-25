@@ -24,6 +24,9 @@
         }
       }
     },
+    "https://github.com/astronautJack/EasyNewFile" : {
+
+    },
     "low_energy" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -71,23 +74,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新建文件"
-          }
-        }
-      }
-    },
-    "untitled_filename" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Untitled"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "未命名文件"
           }
         }
       }
@@ -194,6 +180,23 @@
         }
       }
     },
+    "untitled_filename" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untitled"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未命名文件"
+          }
+        }
+      }
+    },
     "warning_body" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -227,9 +230,6 @@
           }
         }
       }
-    },
-    "版本 1.0 (开源版)" : {
-
     }
   },
   "version" : "1.0"

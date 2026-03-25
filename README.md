@@ -10,10 +10,7 @@
 ### 🎥 Demonstration
 ![Menu Screenshot](Resources/menu_screenshot.png)
 
-<div align="center">
-  <video src="Resources/demo.mov" width="100%" controls></video>
-  <p><i>Quickly create new files anywhere in Finder.</i></p>
-</div>
+![Demo](Resources/demo.gif)
 
 ### ✨ Key Features
 - **🎨 Native Experience**: Built 100% with SwiftUI and SF Symbols. Seamlessly blends into macOS Monterey, Ventura, and Sonoma.
@@ -23,8 +20,8 @@
 - **🔒 Privacy First**: 100% Offline. Strictly follows macOS App Sandbox guidelines. No "Full Disk Access" required.
 - **🌐 Localization**: Fully supports **English** and **Simplified Chinese** based on system language.
 
-### ⚙️ Settings
-![Settings Screenshot](Resources/settings_screenshot.png)
+### ⚙️ Performance
+![Performace Screenshot](Resources/performance_screenshot.png)
 
 ### 📥 Installation
 1. **Download**: Get the latest `EasyNewFile.app.zip` from the [Releases](../../releases) page.
@@ -47,10 +44,7 @@
 ### 🎥 功能演示
 ![右键菜单截图](Resources/menu_screenshot.png)
 
-<div align="center">
-  <video src="Resources/demo.mov" width="100%" controls></video>
-  <p><i>在访达任意空白处快速新建文件。</i></p>
-</div>
+![演示](Resources/demo.gif)
 
 ### ✨ 功能特性
 - **🎨 原生视觉**: 100% 采用 SwiftUI 与 SF Symbols 编写，完美契合 macOS 系统审美。
@@ -60,8 +54,8 @@
 - **🔒 隐私安全**: 100% 本地处理。遵循 App Sandbox 规范，无需“完全磁盘访问权限”。
 - **🌐 国际化**: 完美支持 **中英文双语**，根据系统语言自动切换。
 
-### ⚙️ 设置界面
-![设置界面截图](Resources/settings_screenshot.png)
+### ⚙️ 性能表现
+![性能表现](Resources/settings_screenshot.png)
 
 ### 📥 安装与开启
 1. **下载**: 从 [Releases](../../releases) 页面下载最新的 `EasyNewFile.app.zip` 并解压。
