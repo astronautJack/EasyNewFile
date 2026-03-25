@@ -55,7 +55,7 @@
 - **🌐 国际化**: 完美支持 **中英文双语**，根据系统语言自动切换。
 
 ### ⚙️ 性能表现
-![性能表现](Resources/settings_screenshot.png)
+![性能表现](Resources/performance_screenshot.png)
 
 ### 📥 安装与开启
 1. **下载**: 从 [Releases](../../releases) 页面下载最新的 `EasyNewFile.app.zip` 并解压。
