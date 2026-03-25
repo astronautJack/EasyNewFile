@@ -1,5 +1,6 @@
 
 # <img src="Resources/icon.png" width="40" style="vertical-align: middle;"> EasyNewFile
+
 https://github.com/user-attachments/assets/035d4013-770f-4179-ae6e-69607c5bba51
 
 [English](#english) | [简体中文](#chinese)
