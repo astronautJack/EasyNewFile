@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/035d4013-770f-4179-ae6e-69607c5bba51
+
 # 🚀 EasyNewFile
 
 [English](#english) | [简体中文](#chinese)
@@ -9,8 +13,6 @@
 
 ### 🎥 Demonstration
 ![Menu Screenshot](Resources/menu_screenshot.png)
-
-![Demo](Resources/demo.gif)
 
 ### ✨ Key Features
 - **🎨 Native Experience**: Built 100% with SwiftUI and SF Symbols. Seamlessly blends into macOS Monterey, Ventura, and Sonoma.
@@ -43,8 +45,6 @@
 
 ### 🎥 功能演示
 ![右键菜单截图](Resources/menu_screenshot.png)
-
-![演示](Resources/demo.gif)
 
 ### ✨ 功能特性
 - **🎨 原生视觉**: 100% 采用 SwiftUI 与 SF Symbols 编写，完美契合 macOS 系统审美。
