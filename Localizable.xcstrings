@@ -75,6 +75,23 @@
         }
       }
     },
+    "untitled_filename" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untitled"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未命名文件"
+          }
+        }
+      }
+    },
     "offline_safe" : {
       "extractionState" : "manual",
       "localizations" : {

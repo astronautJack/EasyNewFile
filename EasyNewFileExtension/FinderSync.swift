@@ -1,72 +1,96 @@
 import Cocoa
 import FinderSync
+import os.log
 
 class FinderSync: FIFinderSync {
     
+    let logger = OSLog(subsystem: "com.github.astronautJack.EasyNewFile", category: "FinderSync")
+    
     override init() {
         super.init()
-        // 设置监控的路径。这里设置为根目录 /，表示监控所有 Finder 窗口
-        FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: "/")]
+        
+        // Use more specific and robust directories to monitor.
+        // Monitoring "/" can be unreliable in a sandbox or cause performance issues.
+        let usersURL = URL(fileURLWithPath: "/Users", isDirectory: true)
+        let volumesURL = URL(fileURLWithPath: "/Volumes", isDirectory: true)
+        
+        FIFinderSyncController.default().directoryURLs = [usersURL, volumesURL]
+        os_log("FinderSync init: Monitoring /Users and /Volumes", log: logger, type: .info)
     }
     
-    // 自定义右键菜单
+    // Custom context menu for Finder
     override func menu(for menuKind: FIMenuKind) -> NSMenu? {
         let menu = NSMenu(title: "")
         
-        // 仅在空白处右键 (contextualMenuForContainer) 时显示
+        // Only show the menu if we are in a container (background) and have a valid target URL.
         if menuKind == .contextualMenuForContainer {
-            // 原来：let item = NSMenuItem(title: "新建文本文件", ...)
-            let localizedTitle = NSLocalizedString("menu_new_file", comment: "")
-            let item = NSMenuItem(title: localizedTitle, action: #selector(createNewFile), keyEquivalent: "")
-            // 设置一个符合 Apple 风格的图标（SFSymbols）
-            item.image = NSImage(systemSymbolName: "doc.badge.plus", accessibilityDescription: nil)
-            menu.addItem(item)
+            if let target = FIFinderSyncController.default().targetedURL(), target.isFileURL {
+                let localizedTitle = NSLocalizedString("menu_new_file", comment: "")
+                let item = NSMenuItem(title: localizedTitle, action: #selector(createNewFile), keyEquivalent: "")
+                // Standard Apple SF Symbol for a new file
+                item.image = NSImage(systemSymbolName: "doc.badge.plus", accessibilityDescription: nil)
+                menu.addItem(item)
+            }
         }
         
         return menu
     }
     
     @objc func createNewFile() {
-        guard let target = FIFinderSyncController.default().targetedURL() else { return }
+        // 1. Get the current folder. Resolve symlinks for consistency.
+        guard let rawTarget = FIFinderSyncController.default().targetedURL() else {
+            os_log("createNewFile: No targeted URL found.", log: logger, type: .error)
+            return
+        }
+        let target = rawTarget.resolvingSymlinksInPath()
         
-        // 1. 获取用户设置的后缀，如果为空（首次运行），强制默认为 "txt"
-        let groupID = "group.com.astronautJack.EasyNewFile" // 这里的 ID 记得改成你刚才在 App Group 填写的
+        // 2. Get user preferences for file extension from App Group.
+        let groupID = "group.com.astronautJack.EasyNewFile"
         let sharedDefaults = UserDefaults(suiteName: groupID)
         let fileExtension = sharedDefaults?.string(forKey: "defaultExtension") ?? "txt"
         
-        // 2. 准备文件名（这里可以根据后缀名灵活调整默认标题）
-        let fileName = "未命名文件"
-        var newFilePath = target.appendingPathComponent("\(fileName).\(fileExtension)")
+        // 3. Prepare the localized default filename.
+        let untitledName = NSLocalizedString("untitled_filename", comment: "Default filename for new files")
+        var newFilePath = target.appendingPathComponent("\(untitledName).\(fileExtension)")
         
-        // 3. 自动递增编号逻辑 (防止覆盖已有文件)
+        // 4. Handle duplicates by incrementing a counter (e.g., "Untitled 2.txt").
         var count = 1
         while FileManager.default.fileExists(atPath: newFilePath.path) {
             count += 1
-            newFilePath = target.appendingPathComponent("\(fileName) \(count).\(fileExtension)")
+            newFilePath = target.appendingPathComponent("\(untitledName) \(count).\(fileExtension)")
         }
         
-        // 4. 沙盒安全写入
-        let canAccess = target.startAccessingSecurityScopedResource()
-        
-        do {
-            // 创建空数据
-            let emptyData = "".data(using: .utf8) ?? Data()
-            try emptyData.write(to: newFilePath, options: .atomic)
-            
-            // 5. 异步刷新并选中文件
-            Task {
-                // 通知系统该文件已更新（这会让文件立即在 Finder 中跳出来）
-                await FIFinderSyncController.default().setLastUsedDate(Date(), forItemWith: newFilePath)
-                // 激活 Finder 窗口并选中这个新创建的文件
-                NSWorkspace.shared.activateFileViewerSelecting([newFilePath])
-                //NSLog("EasyNewFile: 成功创建 \(fileExtension) 文件")
+        // 5. Access security-scoped resource if provided by the system.
+        let isSecurityScoped = target.startAccessingSecurityScopedResource()
+        defer {
+            if isSecurityScoped {
+                target.stopAccessingSecurityScopedResource()
             }
-        } catch {
-            //NSLog("EasyNewFile 写入失败: \(error.localizedDescription)")
         }
         
-        if canAccess {
-            target.stopAccessingSecurityScopedResource()
+        // 6. Create the empty file.
+        // FileManager.createFile is often more reliable than Data.write in sandboxed extensions.
+        let success = FileManager.default.createFile(atPath: newFilePath.path, contents: Data(), attributes: nil)
+        
+        if success {
+            os_log("createNewFile: Successfully created file at %{public}@", log: logger, type: .info, newFilePath.path)
+            
+            // 7. Refresh and select the new file.
+            Task { @MainActor in
+                // Small delay to let Finder catch up with the filesystem change.
+                try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s
+                
+                // Notify the system that the file was modified/accessed.
+                await FIFinderSyncController.default().setLastUsedDate(Date(), forItemWith: newFilePath)
+                
+                // Focus Finder and select the file.
+                NSWorkspace.shared.activateFileViewerSelecting([newFilePath])
+            }
+        } else {
+            os_log("createNewFile: Failed to create file at %{public}@", log: logger, type: .error, newFilePath.path)
+            
+            // Potential reason: Permission denied or protected folder.
+            // In a sandbox, writing to restricted system folders will fail.
         }
     }
 }
