@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/035d4013-770f-4179-ae6e-69607c5bba51
 - **🎨 Native Experience**: Built 100% with SwiftUI and SF Symbols. Seamlessly blends into macOS Monterey, Ventura, and Sonoma.
 - **🌓 Auto Theme**: Fully supports Light, Dark, and Auto system themes.
 - **⚙️ Customizable**: Switch your preferred default file extension (.txt, .md, .swift, .py, .docx, etc.) instantly via the app settings.
-- **🌿 Eco-Friendly**: High performance with an ultra-low footprint (usually < 10MB RAM). No background CPU drain.
+- **🌿 Lightweight**: High performance with an ultra-low footprint (usually < 10MB RAM). No background CPU drain.
 - **🔒 Privacy First**: 100% Offline. Strictly follows macOS App Sandbox guidelines. No "Full Disk Access" required.
 - **🌐 Localization**: Fully supports **English** and **Simplified Chinese** based on system language.
 
