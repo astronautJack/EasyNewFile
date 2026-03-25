@@ -18,9 +18,8 @@ struct ContentView: View {
                 Text("app_name") // 使用 Key
                     .font(.system(size: 24, weight: .bold, design: .rounded))
                 
-                Text("版本 1.0 (开源版)")
+                Link("https://github.com/astronautJack/EasyNewFile", destination: URL(string: "https://github.com/astronautJack/EasyNewFile")!)
                     .font(.caption)
-                    .foregroundColor(.secondary)
             }
             .padding(.top, 30)
             .padding(.bottom, 20)
